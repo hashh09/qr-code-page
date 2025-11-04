@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اختيار اللغة / Choose Language</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    transition: background 0.5s, color 0.5s;
+    background-color: #121212;
+    color: #fff;
+  }
+  .container { text-align: center; }
+  h1 { margin-bottom: 24px; }
+  .language-btn, .link-btn {
+    display: inline-block;
+    margin: 12px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.3s;
+  }
+  .language-btn { background: #1f1f1f; color: #fff; }
+  .language-btn:hover { transform: scale(1.05); }
+  .link-btn { background: linear-gradient(45deg, #4facfe, #00f2fe); color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+  .link-btn:hover { transform: scale(1.05); box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
+
+  .message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #4facfe;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    animation: fly 1s forwards;
+  }
+
+  @keyframes fly {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -150%) scale(1.2); opacity: 1; }
+    100% { transform: translate(-50%, -300%) scale(0.8); opacity: 0; }
+  }
+
+  .links { display: none; margin-top: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1 id="title">اختر اللغة / Choose Language</h1>
+  <button class="language-btn" onclick="chooseLang('ar')">العربية 🇯🇴</button>
+  <button class="language-btn" onclick="chooseLang('en')">English 🇬🇧</button>
+
+  <div class="links" id="links">
+    <button class="link-btn" id="teamBtn"></button>
+    <button class="link-btn" id="companyBtn"></button>
+  </div>
+</div>
+
+<div class="message" id="message">تم الضغط!</div>
+
+<script>
+  const message = document.getElementById('message');
+  const linksDiv = document.getElementById('links');
+  const teamBtn = document.getElementById('teamBtn');
+  const companyBtn = document.getElementById('companyBtn');
+
+  const data = {
+    ar: { teamName: "Cipher_team", companyName: "Codegy" },
+    en: { teamName: "Cipher_team", companyName: "Codegy" },
+    teamLink: "https://www.instagram.com/cipher_team?igsh=MWRyZDV6d2Z4cXhjMQ==",
+    companyLink: "https://www.instagram.com/codegy.jo?igsh=MXB1YmpjZnlyMWtpbQ=="
+  };
+
+  function chooseLang(lang){
+    document.querySelectorAll('.language-btn').forEach(btn => btn.style.display='none');
+    linksDiv.style.display = 'block';
+    document.getElementById('title').textContent = (lang==='ar') ? 'اختر الوجهة' : 'Choose destination';
+    teamBtn.textContent = data[lang].teamName;
+    companyBtn.textContent = data[lang].companyName;
+
+    teamBtn.onclick = () => showMessageAndRedirect(data.teamLink);
+    companyBtn.onclick = () => showMessageAndRedirect(data.companyLink);
+  }
+
+  function showMessageAndRedirect(url){
+    message.style.opacity = 1;
+    message.style.transform = 'translate(-50%, -50%) scale(1)';
+    message.textContent = 'جاري التحويل…';
+    message.classList.remove('fly');
+    void message.offsetWidth;
+    message.classList.add('fly');
+    setTimeout(() => { window.open(url, '_blank'); }, 1000);
+  }
+</script>
+</body>
+</html>
